@@ -4,6 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 class ItemForm extends React.Component {
   render() {
     const { handleSubmit, submitting } = this.props;
+    const { onCancel } = this.props;
 
     return (<form onSubmit={handleSubmit}>
       <div>
@@ -14,6 +15,8 @@ class ItemForm extends React.Component {
         </div>
         <div>
           <button type='submit'>Save</button>
+          {" "}
+          <button onClick={onCancel}>Cancel</button>
         </div>
       </div> 
     </form>);

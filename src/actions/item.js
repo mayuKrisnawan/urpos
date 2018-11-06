@@ -21,3 +21,13 @@ export function create(item) {
     payload: item,
   };
 };
+
+export function update(id, item) {
+  return {
+    type: "ITEM/UPDATE",
+    payload: item,
+    meta: {
+      id,
+    },
+  };
+};

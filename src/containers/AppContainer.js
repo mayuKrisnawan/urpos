@@ -11,11 +11,42 @@ import ItemTable from '../components/Item/ItemTable';
 class AppContainer extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isAdd: false,
+      editedItem: null,
+    };
 
-    this.onAddItem = (values) => {
+    this.onCommitAdd = (values) => {
       this.props.Item.create(values);
       this.props.Form.change("item", "name", "");
       alert("Item created");
+      this.onCancelAdd();
+    };
+
+    this.onAdd = () => {
+      this.setState({ isAdd: true });
+    };
+    
+    this.onCancelAdd = () => {
+      this.setState({ isAdd: false });
+    };
+
+    this.onEdit = (editedItem) => (e) => {
+      e.preventDefault();
+      this.setState({ editedItem });
+      const values = {...editedItem};
+      this.props.Form.init("item", values);
+    };
+
+    this.onCancelEdit = () => {
+      this.setState({ editedItem: null });
+    };
+
+    this.onCommitEdit = (values) => {
+      const { editedItem } = this.state;
+      const { id } = editedItem;
+      this.props.Item.update(id, values);
+      this.onCancelEdit();
     };
   }
 
@@ -27,13 +58,23 @@ class AppContainer extends Component {
   }
 
   render() {
+    const { isAdd, editedItem } = this.state;
     const { items, isLoading } = this.props;
-
+    
     return (<div style={{ padding: "50px 100px 50px" }}>
       <div style={{ marginBottom: 50 }}>
-        <ItemForm onSubmit={this.onAddItem}/>
+        {!isAdd && !editedItem && <button onClick={this.onAdd}>Add Item</button>}
+        {isAdd && <React.Fragment>
+          <strong>Add Item</strong>
+          <ItemForm onSubmit={this.onCommitAdd} onCancel={this.onCancelAdd}/>
+        </React.Fragment>}
+        {editedItem && <React.Fragment>
+          <strong>Edit Item</strong>
+          <ItemForm onSubmit={this.onCommitEdit} onCancel={this.onCancelEdit}/>
+        </React.Fragment>}
       </div>
-      <ItemTable items={items} isLoading={isLoading}/>
+      <ItemTable items={items} isLoading={isLoading}
+        onEdit={this.onEdit}/>
     </div>);
   }
 }

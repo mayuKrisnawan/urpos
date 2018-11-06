@@ -2,6 +2,7 @@ import React from 'react';
 
 const ItemTable = (props) => {
   const { items, isLoading } = props;
+  const { onEdit } = props;
 
   if (isLoading) return (<div style={{ textAlign: "center" }}>
     <i>Loading items...</i>
@@ -12,6 +13,7 @@ const ItemTable = (props) => {
       <tr>
         <th>No</th>
         <th>Item Name</th>
+        <th>Option</th>
       </tr>
     </thead>
     <tbody>
@@ -19,6 +21,9 @@ const ItemTable = (props) => {
         return (<tr key={item.id}>
           <td>{index+1}</td>
           <td>{item.name}</td>
+          <td>
+            <a href='' onClick={onEdit(item)}>Edit</a>
+          </td>
         </tr>);
       })}
     </tbody>

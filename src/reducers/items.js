@@ -27,6 +27,20 @@ export default function(state=initialState, action) {
     const items = [...state.items, newItem];
     return {...state, items};
   }
+  
+  if (action.type == "ITEM/UPDATE") {
+    const { meta:{ id } } = action;
+    const editedItem = action.payload;
+    const items = [...state.items];
+    for (let index in items) {
+      const item = items[index];
+      if (item.id == id) {
+        items[index] = editedItem;
+        break;
+      }
+    }
+    return {...state, items};
+  }
 
   return state;
 } 
