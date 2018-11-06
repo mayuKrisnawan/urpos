@@ -24,7 +24,12 @@ class AppContainer extends Component {
     };
 
     this.onAdd = () => {
+      const values = {
+        name: "",
+        prices: [],
+      };
       this.setState({ isAdd: true });
+      this.props.Form.init("item", values);
     };
     
     this.onCancelAdd = () => {
